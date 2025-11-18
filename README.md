@@ -190,16 +190,6 @@ O repositório inclui:
 
 * Código ESP32: 
 
-Mas atenção:  
-No Markdown real, você precisa **colocar três crases** antes e depois do código.  
-Aqui no chat, se eu colocar direto, vai quebrar — então abaixo está **pronto para copiar e colar no README**, já no formato certo.
-
----
-
-# ✅ **Aqui está seu código formatado corretamente para o README**
-
-Basta copiar **exatamente isso** e colar no README.md:
-
 ```cpp
 #include <WiFi.h>
 #include <PubSubClient.h>
@@ -345,6 +335,7 @@ void loop() {
     sendContext("periodic_update");
   }
 }
+```
 
 * Fluxo Node-RED
 * Configuração MQTT
