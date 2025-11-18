@@ -15,7 +15,7 @@
 # 1. **Descrição do Problema**
 
 O futuro do trabalho exige profissionais capazes de aprender rapidamente, manter foco em ambientes híbridos e adaptar-se às mudanças constantes.
-Entretanto, muitos usuários enfrentam problemas como:
+Entretanto, muitos usuários enfrentam dificuldades como:
 
 * Ambientes inadequados (calor, baixa luminosidade, distrações)
 * Falta de indicadores sobre produtividade
@@ -29,72 +29,67 @@ Tais fatores prejudicam aprendizado, saúde e eficiência no trabalho.
 # 2. **A Solução – SYMβIOTE IoT**
 
 O SYMβIOTE é uma plataforma inteligente para desenvolvimento contínuo de habilidades.
-Neste projeto, foi desenvolvido um dispositivo físico que conecta o ambiente real ao contexto digital:
+Neste projeto, desenvolvemos um dispositivo físico que conecta o ambiente real ao contexto digital:
 
 # **Symbiote Context Button — Dispositivo IoT com ESP32**
 
-Ele atua em três frentes principais:
+Ele atua em três frentes principais.
 
 ---
 
 ## 2.1 Monitoramento Ambiental
 
-O dispositivo utiliza sensores para medir:
+O dispositivo mede em tempo real:
 
 * Temperatura (DS18B20)
 * Luminosidade (LDR)
 
-Essas informações ajudam a analisar o ambiente e garantir condições adequadas ao foco e ao aprendizado.
+Isso permite avaliar as condições do ambiente e melhorar foco e bem-estar.
 
-(Local para inserir imagem do circuito e sensores)
-
+![hardware-esp32](images/hardware.png)
 ---
 
 ## 2.2 Detecção de Modo de Contexto
 
-Um botão físico permite alterar entre três modos:
+O botão físico alterna entre três modos de uso:
 
-* Study
-* Work
-* Pause
+* **Study**
+* **Work**
+* **Pause**
 
-LEDs indicam o modo selecionado:
+Com LEDs indicativos para cada modo:
 
 * Azul: Study
 * Verde: Work
 * Vermelho: Pause
 
-(Local para inserir imagem do botão e LEDs)
-
+![funcionamento-sistema](images/funcionamento_projeto.png)
 ---
 
 ## 2.3 Envio de Dados via MQTT
 
-O ESP32 envia dados automaticamente:
+O ESP32 envia mensagens automaticamente:
 
-* A cada 5 segundos
-* Sempre que o modo muda
+* A cada **5 segundos**
+* Sempre que o botão muda o modo
 
-O envio é feito no formato JSON para o broker MQTT.
+O envio acontece no formato JSON.
 
-(Local para inserir captura do MQTT Explorer ou HiveMQ Client)
-
+![Mosquitto](images/mosquitto.png)
 ---
 
 # 3. **Arquitetura do Sistema**
 
-Representação do fluxo:
+Fluxo geral da solução:
 
 ```
 [ ESP32 ]
      ↓ (MQTT Publish)
-[ Broker MQTT - HiveMQ ]
+[ Broker MQTT - HiveMQ / Mosquitto ]
      ↓
-[ Node-RED ] → Dashboard, lógica e integração com a plataforma Symbiote
+[ Node-RED ] → Dashboard + Regras + Integração Symbiote
 ```
-
-(Local para inserir o diagrama da arquitetura registrado)
-
+![Node-RED-dashboard](images/node-red-dashboards.png)
 ---
 
 # 4. **Comunicação MQTT — Parte Técnica**
@@ -105,7 +100,7 @@ Representação do fluxo:
 symbiote/context
 ```
 
-### Formato JSON enviado
+### Exemplo de JSON enviado
 
 ```json
 {
@@ -127,10 +122,8 @@ symbiote/context
 
 ### Broker utilizado
 
-* Endereço: broker.hivemq.com
-* Porta: 1883
-
-(Local para inserir captura da interface do HiveMQ Websocket)
+* Endereço: **broker.hivemq.com**
+* Porta: **1883**
 
 ---
 
@@ -139,59 +132,65 @@ symbiote/context
 ## Requisitos
 
 * Node.js e Node-RED
-* Broker MQTT (HiveMQ, Mosquitto ou similar)
+* Broker MQTT (HiveMQ, Mosquitto, AWS EC2 etc.)
 * Arduino IDE
-* Simulação Wokwi ou dispositivo ESP32
-* Conexão Wi-Fi
+* Wokwi ou ESP32 físico
 
+---
+
+## 5.1 Configuração da AWS 
+
+**Criação da instância:**
+![AWS Instância](images/aws_instancia.png)
+
+**Regras de segurança configuradas:**
+![AWS Regras](images/aws_regras.png)
+---
+
+## 5.2 Conexão via SSH (Putty)
+
+![Putty](images/putty.png)
 ---
 
 # 6. **Simulação Wokwi**
 
-O projeto pode ser testado integralmente no Wokwi.
+Simulação completa disponível:
+**[link-wokwi](https://wokwi.com/projects/447869522108655617)**
 
-Link da simulação:
-INSERIR_LINK_AQUI
-
-### Passo a passo
+### Passos:
 
 1. Abrir o link do projeto
 2. Clicar em Start Simulation
 3. Abrir o Serial Monitor
-4. Verificar leituras de sensores e JSON enviado
-5. Visualizar dados no Node-RED
-
-(Local para inserir imagem da simulação em funcionamento)
+4. Verificar leituras de sensores
+5. Conferir envio MQTT no Node-RED
 
 ---
 
 # 7. **Node-RED – Fluxo e Dashboard**
 
-O Node-RED recebe os dados do MQTT e exibe:
+O Node-RED exibe:
 
-* Temperatura em tempo real
+* Temperatura
 * Luminosidade
 * Modo atual
-* Histórico de eventos
-* JSON recebido
+* Eventos recebidos
+* JSONs publicados
 
-O fluxo também pode disparar lógicas personalizadas, como alertas ou recomendações.
+E inclui lógica para alertas e recomendações.
 
-(Local para inserir imagem do dashboard)
-(Local para inserir imagem do fluxo)
+**Imagem do Dashboard / Fluxo:**
 
+![Node-RED](images/node-red.png)
 ---
 
 # 8. **Código-Fonte**
 
-O repositório contém:
+O repositório inclui:
 
-* Código completo do ESP32 (main.ino)
-* Fluxo Node-RED (arquivo .json)
-* Scripts auxiliares
-* Comentários explicativos em todos os pontos importantes
-
-(Local para inserir captura de partes importantes do código)
+* Código ESP32: `main.ino`
+* Fluxo Node-RED
+* Configuração MQTT
 
 ---
 
@@ -200,8 +199,8 @@ O repositório contém:
 ### Hardware
 
 * ESP32
-* Sensor DS18B20
-* Sensor LDR
+* DS18B20
+* LDR
 * LEDs
 * Botão tátil
 
@@ -210,10 +209,10 @@ O repositório contém:
 * Arduino IDE
 * Wokwi
 * Node-RED
-* HiveMQ MQTT Broker
+* Mosquitto / HiveMQ
+* AWS EC2
 * ArduinoJson
 * DallasTemperature
-* OneWire
 
 ---
 
@@ -221,36 +220,28 @@ O repositório contém:
 
 O vídeo apresenta:
 
-* O problema
-* A arquitetura
-* Funcionamento da simulação
-* Comunicação MQTT
-* Dashboard do Node-RED
-* Integração com a plataforma Symbiote
+* Explicação do problema
+* Arquitetura da solução
+* Funcionamento no Wokwi
+* Envio MQTT
+* Dashboard Node-RED
 
 Inserir link do vídeo:
-INSERIR_LINK_AQUI
-
-(Local para inserir imagem do vídeo)
+**INSERIR_LINK_AQUI**
 
 ---
 
 # 11. **Impacto no Futuro do Trabalho**
 
-O SYMβIOTE IoT cria uma ponte entre o ambiente físico e o digital, permitindo:
+O SYMβIOTE IoT cria uma ponte entre:
 
-* Melhor controle do ambiente em tempo real
-* Redução de distrações e aumento de foco
-* Aprendizado guiado por métricas reais
-* Integração natural do usuário com a IA
-* Evolução contínua baseada em contexto
+* Ambiente físico
+* Inteligência artificial
+* Rotina de estudo e trabalho
 
-Essa abordagem combina tecnologia, ambiente e inteligência para transformar a forma como as pessoas aprendem e trabalham.
+Permitindo:
 
----
-
-# 12. **Conclusão**
-
-O Symbiote Context Button demonstra como o ESP32 pode se tornar uma interface física poderosa entre o usuário e o ecossistema digital do futuro.
-A solução propõe uma nova forma de estudar e trabalhar, unindo ambiente, comportamento e IA em um único fluxo contínuo de evolução.
-
+* Ajustes de ambiente
+* Redução de distrações
+* Entendimento do contexto em tempo real
+* Evolução profissional baseada em dados
